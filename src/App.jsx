@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import emailjs from "@emailjs/browser";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./App.css";
@@ -60,6 +61,51 @@ export default function App() {
   const animFrameRef = useRef(null);
   const [activeSection, setActiveSection] = useState("home");
   const [menuOpen, setMenuOpen] = useState(false);
+
+  // ✅ EmailJS States
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
+  const [sending, setSending] = useState(false);
+  const [sent, setSent] = useState(false);
+
+  // ✅ Send Email Function
+  const handleSend = () => {
+    if (!formData.name || !formData.email || !formData.message) {
+      alert("Please fill all required fields!");
+      return;
+    }
+
+    setSending(true);
+
+    emailjs
+      .send(
+        "YOUR_SERVICE_ID", // 👈 EmailJS Service ID yahan lagao
+        "YOUR_TEMPLATE_ID", // 👈 EmailJS Template ID yahan lagao
+        {
+          from_name: formData.name,
+          from_email: formData.email,
+          subject: formData.subject,
+          message: formData.message,
+          to_email: "zameermahar1405@gmail.com",
+        },
+        "YOUR_PUBLIC_KEY", // 👈 EmailJS Public Key yahan lagao
+      )
+      .then(() => {
+        setSending(false);
+        setSent(true);
+        setFormData({ name: "", email: "", subject: "", message: "" });
+        setTimeout(() => setSent(false), 4000);
+      })
+      .catch((err) => {
+        console.error("EmailJS Error:", err);
+        setSending(false);
+        alert("Message send karne mein masla hua. Dobara try karein!");
+      });
+  };
 
   // GSAP Snake Cursor
   useEffect(() => {
@@ -131,7 +177,6 @@ export default function App() {
 
   // GSAP Animations
   useEffect(() => {
-    // Hero
     const tl = gsap.timeline({ delay: 0.2 });
     tl.fromTo(
       ".hero-badge",
@@ -175,7 +220,6 @@ export default function App() {
         "-=0.2",
       );
 
-    // Skills
     gsap.utils.toArray(".skill-card").forEach((card, i) => {
       gsap.fromTo(
         card,
@@ -192,7 +236,6 @@ export default function App() {
       );
     });
 
-    // Projects
     gsap.utils.toArray(".project-card").forEach((card, i) => {
       gsap.fromTo(
         card,
@@ -208,7 +251,6 @@ export default function App() {
       );
     });
 
-    // Section titles
     gsap.utils.toArray(".section-title").forEach((el) => {
       gsap.fromTo(
         el,
@@ -223,7 +265,6 @@ export default function App() {
       );
     });
 
-    // Contact card
     gsap.fromTo(
       ".contact-card",
       { y: 60, opacity: 0 },
@@ -302,7 +343,6 @@ export default function App() {
             <button
               className="btn-cv hero-btn"
               onClick={() => {
-                // Generate CV as HTML and trigger download
                 const cvHTML = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -547,6 +587,8 @@ export default function App() {
                 ))}
               </div>
             </div>
+
+            {/* ✅ Contact Form with EmailJS */}
             <div className="contact-right">
               <h3 className="contact-heading">Send a Message</h3>
               <div className="form-group">
@@ -554,6 +596,10 @@ export default function App() {
                   className="form-input"
                   placeholder="Your Name"
                   type="text"
+                  value={formData.name}
+                  onChange={(e) =>
+                    setFormData({ ...formData, name: e.target.value })
+                  }
                 />
               </div>
               <div className="form-group">
@@ -561,6 +607,10 @@ export default function App() {
                   className="form-input"
                   placeholder="Your Email"
                   type="email"
+                  value={formData.email}
+                  onChange={(e) =>
+                    setFormData({ ...formData, email: e.target.value })
+                  }
                 />
               </div>
               <div className="form-group">
@@ -568,6 +618,10 @@ export default function App() {
                   className="form-input"
                   placeholder="Subject"
                   type="text"
+                  value={formData.subject}
+                  onChange={(e) =>
+                    setFormData({ ...formData, subject: e.target.value })
+                  }
                 />
               </div>
               <div className="form-group">
@@ -575,9 +629,23 @@ export default function App() {
                   className="form-input form-textarea"
                   placeholder="Your Message..."
                   rows={4}
+                  value={formData.message}
+                  onChange={(e) =>
+                    setFormData({ ...formData, message: e.target.value })
+                  }
                 />
               </div>
-              <button className="btn-primary full-w">Send Message 🚀</button>
+              <button
+                className="btn-primary full-w"
+                onClick={handleSend}
+                disabled={sending}
+              >
+                {sending
+                  ? "Sending... ⏳"
+                  : sent
+                    ? "Sent! ✅"
+                    : "Send Message 🚀"}
+              </button>
             </div>
           </div>
         </div>
