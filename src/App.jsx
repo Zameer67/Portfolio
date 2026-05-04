@@ -83,16 +83,15 @@ export default function App() {
 
     emailjs
       .send(
-        "YOUR_SERVICE_ID", // 👈 EmailJS Service ID yahan lagao
-        "YOUR_TEMPLATE_ID", // 👈 EmailJS Template ID yahan lagao
+        "service_0a2nskd",
+        "template_aaq8vi9",
         {
           from_name: formData.name,
           from_email: formData.email,
           subject: formData.subject,
           message: formData.message,
-          to_email: "zameermahar1405@gmail.com",
         },
-        "YOUR_PUBLIC_KEY", // 👈 EmailJS Public Key yahan lagao
+        "_vot8FqI-Fj9n1T8j",
       )
       .then(() => {
         setSending(false);
