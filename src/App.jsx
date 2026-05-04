@@ -55,7 +55,7 @@ export default function App() {
   const segmentsRef = useRef([]);
   const mousePos = useRef({ x: -200, y: -200 });
   const positions = useRef(
-    Array.from({ length: 24 }, () => ({ x: -200, y: -200 }))
+    Array.from({ length: 24 }, () => ({ x: -200, y: -200 })),
   );
   const animFrameRef = useRef(null);
   const [activeSection, setActiveSection] = useState("home");
@@ -118,8 +118,10 @@ export default function App() {
       const el = document.getElementById(id);
       if (!el) return null;
       const obs = new IntersectionObserver(
-        ([entry]) => { if (entry.isIntersecting) setActiveSection(id); },
-        { threshold: 0.4 }
+        ([entry]) => {
+          if (entry.isIntersecting) setActiveSection(id);
+        },
+        { threshold: 0.4 },
       );
       obs.observe(el);
       return obs;
@@ -131,58 +133,107 @@ export default function App() {
   useEffect(() => {
     // Hero
     const tl = gsap.timeline({ delay: 0.2 });
-    tl.fromTo(".hero-badge", { y: -30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: "back.out(1.7)" })
-      .fromTo(".hero-name .line1", { y: 100, opacity: 0, skewY: 8 }, { y: 0, opacity: 1, skewY: 0, duration: 1, ease: "power4.out" }, "-=0.2")
-      .fromTo(".hero-name .line2", { y: 100, opacity: 0, skewY: 8 }, { y: 0, opacity: 1, skewY: 0, duration: 1, ease: "power4.out" }, "-=0.7")
-      .fromTo(".hero-sub", { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: "power3.out" }, "-=0.4")
-      .fromTo(".hero-desc", { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6 }, "-=0.3")
-      .fromTo(".hero-btn", { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, stagger: 0.12, ease: "power2.out" }, "-=0.3")
-      .fromTo(".hero-stat", { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, stagger: 0.1 }, "-=0.2");
+    tl.fromTo(
+      ".hero-badge",
+      { y: -30, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.6, ease: "back.out(1.7)" },
+    )
+      .fromTo(
+        ".hero-name .line1",
+        { y: 100, opacity: 0, skewY: 8 },
+        { y: 0, opacity: 1, skewY: 0, duration: 1, ease: "power4.out" },
+        "-=0.2",
+      )
+      .fromTo(
+        ".hero-name .line2",
+        { y: 100, opacity: 0, skewY: 8 },
+        { y: 0, opacity: 1, skewY: 0, duration: 1, ease: "power4.out" },
+        "-=0.7",
+      )
+      .fromTo(
+        ".hero-sub",
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.7, ease: "power3.out" },
+        "-=0.4",
+      )
+      .fromTo(
+        ".hero-desc",
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.6 },
+        "-=0.3",
+      )
+      .fromTo(
+        ".hero-btn",
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.5, stagger: 0.12, ease: "power2.out" },
+        "-=0.3",
+      )
+      .fromTo(
+        ".hero-stat",
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.5, stagger: 0.1 },
+        "-=0.2",
+      );
 
     // Skills
     gsap.utils.toArray(".skill-card").forEach((card, i) => {
-      gsap.fromTo(card,
+      gsap.fromTo(
+        card,
         { y: 50, opacity: 0, scale: 0.9 },
         {
-          y: 0, opacity: 1, scale: 1, duration: 0.6,
+          y: 0,
+          opacity: 1,
+          scale: 1,
+          duration: 0.6,
           delay: (i % 4) * 0.08,
           ease: "power3.out",
-          scrollTrigger: { trigger: card, start: "top 88%" }
-        }
+          scrollTrigger: { trigger: card, start: "top 88%" },
+        },
       );
     });
 
     // Projects
     gsap.utils.toArray(".project-card").forEach((card, i) => {
-      gsap.fromTo(card,
+      gsap.fromTo(
+        card,
         { y: 70, opacity: 0 },
         {
-          y: 0, opacity: 1, duration: 0.75,
+          y: 0,
+          opacity: 1,
+          duration: 0.75,
           delay: i * 0.1,
           ease: "power3.out",
-          scrollTrigger: { trigger: card, start: "top 85%" }
-        }
+          scrollTrigger: { trigger: card, start: "top 85%" },
+        },
       );
     });
 
     // Section titles
     gsap.utils.toArray(".section-title").forEach((el) => {
-      gsap.fromTo(el,
+      gsap.fromTo(
+        el,
         { clipPath: "inset(0 100% 0 0)", opacity: 0 },
         {
-          clipPath: "inset(0 0% 0 0)", opacity: 1, duration: 0.9, ease: "power3.inOut",
-          scrollTrigger: { trigger: el, start: "top 88%" }
-        }
+          clipPath: "inset(0 0% 0 0)",
+          opacity: 1,
+          duration: 0.9,
+          ease: "power3.inOut",
+          scrollTrigger: { trigger: el, start: "top 88%" },
+        },
       );
     });
 
     // Contact card
-    gsap.fromTo(".contact-card",
+    gsap.fromTo(
+      ".contact-card",
       { y: 60, opacity: 0 },
       {
-        y: 0, opacity: 1, duration: 0.9, ease: "power3.out",
-        scrollTrigger: { trigger: ".contact-card", start: "top 85%" }
-      }
+        y: 0,
+        opacity: 1,
+        duration: 0.9,
+        ease: "power3.out",
+        scrollTrigger: { trigger: ".contact-card", start: "top 85%" },
+      },
     );
   }, []);
 
@@ -215,7 +266,9 @@ export default function App() {
           ))}
         </div>
         <button className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>
-          <span /><span /><span />
+          <span />
+          <span />
+          <span />
         </button>
       </nav>
 
@@ -237,10 +290,13 @@ export default function App() {
             <span className="line1">Zameer</span>
             <span className="line2 gradient-text">Mahar</span>
           </h1>
-          <p className="hero-sub">Full Stack Developer · Web Architect · Problem Solver</p>
+          <p className="hero-sub">
+            Full Stack Developer · Web Architect · Problem Solver
+          </p>
           <p className="hero-desc">
-            I craft high-performance digital experiences using modern web technologies.
-            From pixel-perfect frontends to scalable .NET backends.
+            I craft high-performance digital experiences using modern web
+            technologies. From pixel-perfect frontends to scalable .NET
+            backends.
           </p>
           <div className="hero-btns">
             <button
@@ -328,11 +384,11 @@ export default function App() {
   <p class="footer-note">Portfolio: zameermahar.dev &nbsp;|&nbsp; Built with passion for great code</p>
 </body>
 </html>`;
-                const blob = new Blob([cvHTML], { type: 'text/html' });
+                const blob = new Blob([cvHTML], { type: "text/html" });
                 const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
+                const a = document.createElement("a");
                 a.href = url;
-                a.download = 'Zameer_Mahar_CV.html';
+                a.download = "Zameer_Mahar_CV.html";
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
@@ -341,10 +397,16 @@ export default function App() {
             >
               <span className="cv-icon">📄</span> Download CV
             </button>
-            <button className="btn-primary hero-btn" onClick={() => scrollTo("projects")}>
+            <button
+              className="btn-primary hero-btn"
+              onClick={() => scrollTo("projects")}
+            >
               See My Work <span className="btn-arrow">→</span>
             </button>
-            <button className="btn-ghost hero-btn" onClick={() => scrollTo("contact")}>
+            <button
+              className="btn-ghost hero-btn"
+              onClick={() => scrollTo("contact")}
+            >
               Hire Me
             </button>
           </div>
@@ -377,11 +439,18 @@ export default function App() {
           <div className="section-header">
             <span className="section-tag">Arsenal</span>
             <h2 className="section-title">Technical Skills</h2>
-            <p className="section-sub">Covering the full web stack — frontend, backend, and everything in between</p>
+            <p className="section-sub">
+              Covering the full web stack — frontend, backend, and everything in
+              between
+            </p>
           </div>
           <div className="skills-grid">
             {skills.map((skill, i) => (
-              <div key={i} className="skill-card" style={{ "--accent": skill.color }}>
+              <div
+                key={i}
+                className="skill-card"
+                style={{ "--accent": skill.color }}
+              >
                 <div className="skill-glow" />
                 <div className="skill-top">
                   <span className="skill-icon">{skill.icon}</span>
@@ -389,7 +458,13 @@ export default function App() {
                 </div>
                 <span className="skill-name">{skill.name}</span>
                 <div className="skill-bar-track">
-                  <div className="skill-bar-fill" style={{ width: `${skill.level}%`, background: `linear-gradient(90deg, ${skill.color}88, ${skill.color})` }} />
+                  <div
+                    className="skill-bar-fill"
+                    style={{
+                      width: `${skill.level}%`,
+                      background: `linear-gradient(90deg, ${skill.color}88, ${skill.color})`,
+                    }}
+                  />
                 </div>
               </div>
             ))}
@@ -403,12 +478,17 @@ export default function App() {
           <div className="section-header">
             <span className="section-tag">Portfolio</span>
             <h2 className="section-title">Featured Projects</h2>
-            <p className="section-sub">Real-world applications built with passion and precision</p>
+            <p className="section-sub">
+              Real-world applications built with passion and precision
+            </p>
           </div>
           <div className="projects-grid">
             {projects.map((p, i) => (
               <div key={i} className="project-card">
-                <div className="project-thumb" style={{ background: p.gradient }}>
+                <div
+                  className="project-thumb"
+                  style={{ background: p.gradient }}
+                >
                   <span className="project-emoji">{p.emoji}</span>
                   <span className="project-num">0{i + 1}</span>
                 </div>
@@ -416,7 +496,11 @@ export default function App() {
                   <h3 className="project-title">{p.title}</h3>
                   <p className="project-desc">{p.desc}</p>
                   <div className="project-tags">
-                    {p.tags.map((t, j) => <span key={j} className="tag">{t}</span>)}
+                    {p.tags.map((t, j) => (
+                      <span key={j} className="tag">
+                        {t}
+                      </span>
+                    ))}
                   </div>
                   <button className="project-cta">
                     View Project <span>↗</span>
@@ -434,14 +518,17 @@ export default function App() {
           <div className="section-header">
             <span className="section-tag">Let's Talk</span>
             <h2 className="section-title">Get In Touch</h2>
-            <p className="section-sub">Have a project? Let's build something incredible together.</p>
+            <p className="section-sub">
+              Have a project? Let's build something incredible together.
+            </p>
           </div>
           <div className="contact-card">
             <div className="contact-left">
               <h3 className="contact-heading">About Me</h3>
               <p className="contact-bio">
-                I'm Zameer Mahar, a passionate Full Stack Developer with expertise across the entire web stack.
-                Whether it's a sleek React UI or a robust ASP.NET Core backend — I deliver quality.
+                I'm Zameer Mahar, a passionate Full Stack Developer with
+                expertise across the entire web stack. Whether it's a sleek
+                React UI or a robust ASP.NET Core backend — I deliver quality.
               </p>
               <div className="contact-details">
                 {[
@@ -463,20 +550,34 @@ export default function App() {
             <div className="contact-right">
               <h3 className="contact-heading">Send a Message</h3>
               <div className="form-group">
-                <input className="form-input" placeholder="Your Name" type="text" />
+                <input
+                  className="form-input"
+                  placeholder="Your Name"
+                  type="text"
+                />
               </div>
               <div className="form-group">
-                <input className="form-input" placeholder="Your Email" type="email" />
+                <input
+                  className="form-input"
+                  placeholder="Your Email"
+                  type="email"
+                />
               </div>
               <div className="form-group">
-                <input className="form-input" placeholder="Subject" type="text" />
+                <input
+                  className="form-input"
+                  placeholder="Subject"
+                  type="text"
+                />
               </div>
               <div className="form-group">
-                <textarea className="form-input form-textarea" placeholder="Your Message..." rows={4} />
+                <textarea
+                  className="form-input form-textarea"
+                  placeholder="Your Message..."
+                  rows={4}
+                />
               </div>
-              <button className="btn-primary full-w">
-                Send Message 🚀
-              </button>
+              <button className="btn-primary full-w">Send Message 🚀</button>
             </div>
           </div>
         </div>
@@ -485,11 +586,14 @@ export default function App() {
       {/* Footer */}
       <footer className="footer">
         <p className="footer-text">
-          © 2025 <span className="gradient-text">Zameer Mahar</span> · All rights reserved · Built with React & GSAP
+          © 2025 <span className="gradient-text">Zameer Mahar</span> · All
+          rights reserved · Built with React & GSAP
         </p>
         <div className="footer-stack">
           {["React", "GSAP", "CSS3", "Vite"].map((t) => (
-            <span key={t} className="footer-badge">{t}</span>
+            <span key={t} className="footer-badge">
+              {t}
+            </span>
           ))}
         </div>
       </footer>
